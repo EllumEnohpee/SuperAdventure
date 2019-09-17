@@ -94,5 +94,26 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{93cf889f-9eb5-41da-afb1-3e0fb852fdc6}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Locations\Home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Locations\Farmhouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Locations\FarmFields.png" />
+    <Resource Include="Locations\HerbalistsGarden.png" />
+    <Resource Include="Locations\HerbalistsHut.png" />
+    <Resource Include="Locations\SpiderForest.png" />
+    <Resource Include="Locations\TownGate.png" />
+    <Resource Include="Locations\TownSquare.png" />
+    <Resource Include="Locations\Trader.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
