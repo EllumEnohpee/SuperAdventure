@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace Engine
+namespace Engine.Models
+
+
 {
     public class BaseNotificationClass : INotifyPropertyChanged
     {

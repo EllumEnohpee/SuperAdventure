@@ -54,6 +54,8 @@ namespace Engine.ViewModels
             CurrentPlayer.ExperiencePoints = 0;
             CurrentPlayer.Level = 1;
             CurrentPlayer.Gold = 1000000;
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1001));
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1002));
 
             //Initialize World
             WorldFactory Factory = new WorldFactory();
