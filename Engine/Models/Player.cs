@@ -77,12 +77,19 @@ namespace Engine.Models
             get;
             set;
         }
+
+        public ObservableCollection<QuestStatus> Quests
+        {
+            get;
+            set;
+        }
        
         //constructors
 
         public Player()
         {
             Inventory = new ObservableCollection<GameItem>();
+            Quests = new ObservableCollection<QuestStatus>();
         }
 
     }
