@@ -7,15 +7,16 @@ namespace Engine.Models
 {
     public class Monster : BaseNotificationClass
     {
+        private int _hitPoints;
         public string Name { get; set; }
         public string ImageName { get; set; }
         public int HitPoints
         {
-            get { return HitPoints; }
+            get { return _hitPoints; }
 
             private set
             {
-                HitPoints = value;
+                _hitPoints = value;
                 OnPropertyChanged(nameof(HitPoints));
             }
         }
@@ -32,7 +33,7 @@ namespace Engine.Models
             int rewardGold)
         {
             Name = name;
-            ImageName = imageName;
+            ImageName = $"Monsters/{imageName}";
             HitPoints = hitPoints;
             MaximumHitPoints = maximumHitPoints;
             RewardExperiencePoints = rewardExperiencePoints;

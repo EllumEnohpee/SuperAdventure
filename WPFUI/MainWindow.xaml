@@ -84,6 +84,37 @@
                                    Text="{Binding CurrentLocation.Description}"/>
                     </Grid>
                 </Border>
+                <!-- Monster Information -->
+                <Border Grid.Row="1" Grid.Column="0"
+                        BorderBrush="Gainsboro"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" 
+                                   HorizontalAlignment="Center"
+                                   Height="Auto" 
+                                   Text="{Binding CurrentMonster.Name}"/>
+                        <Image Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               Height="125"
+                               Width="125"
+                               Source="{Binding CurrentMonster.ImageName}"/>
+                        <StackPanel Grid.Row="2"
+                                    Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
+                                    HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="Current Hit Points: "/>
+                            <TextBlock Text="{Binding CurrentMonster.HitPoints}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
         <!--Inventory/Quests-->
