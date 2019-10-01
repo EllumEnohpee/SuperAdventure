@@ -115,5 +115,10 @@
     <Resource Include="Locations\TownSquare.png" />
     <Resource Include="Locations\Trader.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Monsters\GiantSpider.png" />
+    <Resource Include="Monsters\Rat.png" />
+    <Resource Include="Monsters\Snake.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
