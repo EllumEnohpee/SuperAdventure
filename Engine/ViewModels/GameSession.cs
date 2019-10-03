@@ -17,6 +17,7 @@ namespace Engine.ViewModels
         private Monster _currentMonster;
         private Location _currentLocation;
         public Player CurrentPlayer { get; set; }
+        public Weapon CurrentWeapon { get; set; }
         public Location CurrentLocation
         {
             get { return _currentLocation; }
@@ -75,7 +76,7 @@ namespace Engine.ViewModels
         //Constructors
         public GameSession()
         {
-            //Initialize starting Player info
+            //Initialize starting Player 
             CurrentPlayer = new Player();
             CurrentPlayer.Name = "Ellum";
             CurrentPlayer.CharacterClass = "Fighter";
@@ -83,8 +84,14 @@ namespace Engine.ViewModels
             CurrentPlayer.ExperiencePoints = 0;
             CurrentPlayer.Level = 1;
             CurrentPlayer.Gold = 1000000;
-            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1001));
-            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1002));
+            
+            if(!CurrentPlayer.Weapons.Any())
+            {
+               CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
+                RaiseMessage("Item added to Inventory");
+            }
+            
+            
 
             //Initialize World
             WorldFactory Factory = new WorldFactory();
@@ -134,6 +141,62 @@ namespace Engine.ViewModels
             OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
         }
 
-            
+        public void AttackCurrentMonster()
+        {
+            if(CurrentWeapon == null)
+            {
+                RaiseMessage("Select a weapon to attack!");
+                return;                           
+            }
+
+            //Determine damage to monster
+            int damageToMonster = 
+                RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
+            if (damageToMonster == 0)
+            {
+                RaiseMessage("Your attack missed!");
+            }
+            else
+            {
+                CurrentMonster.HitPoints -= damageToMonster;
+                RaiseMessage($"You dealt {damageToMonster} points of damage to the {CurrentMonster.Name}");
+            }
+
+            //Is the monster defeated?  Collect rewards
+            if(CurrentMonster.HitPoints <= 0)
+            {
+                RaiseMessage($"You defeated the {CurrentMonster.Name}!");
+                CurrentPlayer.Gold += CurrentMonster.RewardGold;
+                RaiseMessage($"You received {CurrentMonster.RewardGold} gold.");
+                CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
+                RaiseMessage($"You received {CurrentMonster.RewardExperiencePoints} experience points.");
+                foreach(ItemQuantity rewardItem in CurrentMonster.Inventory)
+                {
+                    GameItem item = ItemFactory.CreateGameItem(rewardItem.ItemId);
+                    for (int i = 0; i <  rewardItem.Quantity; i++)
+                    {
+                        CurrentPlayer.AddItemToInventory(item);
+                    }
+                    RaiseMessage($"You received {rewardItem.Quantity} {item.Name}s.");
+                }
+                CurrentMonster = null;
+            }
+            //If still alive, let the monster fight back
+            else
+            {
+                int damageToPlayer = 
+                    RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
+                CurrentPlayer.HitPoints -= damageToPlayer;
+                RaiseMessage($"The {CurrentMonster.Name} attacks you for {damageToPlayer} damage!");
+            }
+            //If player is defeated return to home and heal to maximum
+            if(CurrentPlayer.HitPoints <= 0)
+            {
+                RaiseMessage($"You were defeated by the {CurrentMonster.Name}!");
+                CurrentLocation = CurrentWorld.LocationAt(0, -1);
+                CurrentPlayer.HitPoints = 10 * CurrentPlayer.Level;                
+            }
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Engine.Factories;
 
 namespace Engine.Models
@@ -78,6 +79,9 @@ namespace Engine.Models
             set;
         }
 
+        public List<GameItem> Weapons => 
+            Inventory.Where(item => item is Weapon).ToList();
+
         public ObservableCollection<QuestStatus> Quests
         {
             get;
@@ -90,6 +94,15 @@ namespace Engine.Models
         {
             Inventory = new ObservableCollection<GameItem>();
             Quests = new ObservableCollection<QuestStatus>();
+        }
+
+        //methods
+
+        public void AddItemToInventory(GameItem item)
+        {
+            Inventory.Add(item);
+            OnPropertyChanged(nameof(Weapons));
+            
         }
 
     }

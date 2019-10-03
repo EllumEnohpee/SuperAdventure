@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Engine.Models;
 namespace Engine.Factories
 {
@@ -24,8 +25,17 @@ namespace Engine.Factories
 
         public static GameItem CreateGameItem(int itemId)
         {
-            GameItem standardItem = _standardItems.Find(item => item.ItemId == itemId);
-            if (standardItem != null) return standardItem.Clone();
+            GameItem standardItem = _standardItems.FirstOrDefault(item => item.ItemId == itemId);
+            if (standardItem != null)
+            {
+                if (standardItem is Weapon)
+                {
+                    return (standardItem as Weapon).Clone();
+
+                }
+
+                return standardItem.Clone();
+            }
             return null;
         }
     }
