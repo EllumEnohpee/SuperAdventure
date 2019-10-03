@@ -8,6 +8,7 @@ namespace Engine.Models
 {
     public class Location
     {
+        //Properties
         public int XCoordinate { get; set; }
         public int YCoordinate { get; set; }
         public String Name { get; set; }
@@ -17,12 +18,12 @@ namespace Engine.Models
         public List<Quest> QuestsAvailableHere { get; set; } = new List<Quest>();
 
         public List<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
-
+        //Methods
         public void AddMonster(int monsterId, int chanceOfEncountering)
         {
             if(MonstersHere.Exists(m => m.MonsterId == monsterId))
             {
-                MonstersHere.Find(m => m.MonsterId == monsterId).ChanceOfEncountering = chanceOfEncountering;
+                MonstersHere.FirstOrDefault(m => m.MonsterId == monsterId).ChanceOfEncountering = chanceOfEncountering;
             }
 
             else

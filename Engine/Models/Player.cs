@@ -102,9 +102,7 @@ namespace Engine.Models
         {
             Inventory.Add(item);
             OnPropertyChanged(nameof(Weapons));
-            
         }
-
     }
 
 

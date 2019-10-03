@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
+using System.Linq;
 using Engine.Models;
 using Engine.EventArgs;
 using Engine;
 using Engine.Factories;
-using System.ComponentModel;
-using System.Linq;
 
 namespace Engine.ViewModels
 {
     public class GameSession : BaseNotificationClass
     {
         public EventHandler<GameMessageEventArgs> OnMessageRaised;
-        //Properties
+
         private Monster _currentMonster;
         private Location _currentLocation;
+        //Properties
         public Player CurrentPlayer { get; set; }
         public Weapon CurrentWeapon { get; set; }
         public Location CurrentLocation
@@ -31,7 +32,6 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToWest));
                 GivePlayerQuestAtLocation();
                 GetMonsterAtLocation();
-
             }
         }
 
@@ -56,26 +56,22 @@ namespace Engine.ViewModels
             }
         }
         public World CurrentWorld { get; set; }
-        public bool HasLocationToNorth
-        {
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null; }
-        }
-        public bool HasLocationToSouth
-        {
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null; }
-        }
-        public bool HasLocationToEast
-        {
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null; }
-        }
-        public bool HasLocationToWest
-        {
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null; }
-        }
+        public bool HasLocationToNorth => 
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
+        public bool HasLocationToSouth =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
+        public bool HasLocationToEast =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+        public bool HasLocationToWest =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
         public bool HasMonster => CurrentMonster != null;
         //Constructors
         public GameSession()
-        {
+        {            
+            //Initialize World
+            CurrentWorld = WorldFactory.CreateWorld();
+            CurrentLocation = CurrentWorld.LocationAt(0, 0);
+
             //Initialize starting Player 
             CurrentPlayer = new Player();
             CurrentPlayer.Name = "Ellum";
@@ -88,16 +84,7 @@ namespace Engine.ViewModels
             if(!CurrentPlayer.Weapons.Any())
             {
                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
-                RaiseMessage("Item added to Inventory");
             }
-            
-            
-
-            //Initialize World
-            WorldFactory Factory = new WorldFactory();
-            CurrentWorld = Factory.CreateWorld();
-            CurrentLocation = CurrentWorld.LocationAt(0, 0);
-
                        
         }
 
@@ -194,7 +181,8 @@ namespace Engine.ViewModels
             {
                 RaiseMessage($"You were defeated by the {CurrentMonster.Name}!");
                 CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                CurrentPlayer.HitPoints = 10 * CurrentPlayer.Level;                
+                CurrentPlayer.HitPoints = 10 * CurrentPlayer.Level;
+                
             }
         }
 
