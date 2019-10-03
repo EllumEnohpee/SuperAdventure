@@ -20,7 +20,7 @@ namespace Engine.Models
             Name = name;
             Description = description;
             QuestId = questId;
-            ItemsToComplete = ItemsToComplete;
+            ItemsToComplete = itemsToComplete;
             RewardItems = rewardItems;
             RewardGold = rewardGold;
             RewardExperiencePoints = rewardExperiencePoints;

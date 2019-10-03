@@ -103,6 +103,23 @@ namespace Engine.Models
             Inventory.Add(item);
             OnPropertyChanged(nameof(Weapons));
         }
+
+		public bool HasAllTheseItems(List<ItemQuantity> itemQuantities)
+		{			
+			foreach(ItemQuantity itemQuantity in itemQuantities)
+			{
+				if (Inventory.Count(i => i.Name == ItemFactory.CreateGameItem(itemQuantity.ItemId).Name) < itemQuantity.Quantity)
+					return false;
+			}
+			return true;
+		}
+		public void RemoveItemQuantity(ItemQuantity itemQuantity)
+		{
+			for(int i = 0; i < itemQuantity.Quantity; i++)
+			{
+				Inventory.Remove(ItemFactory.CreateGameItem(itemQuantity.ItemId));
+			}
+		}
     }
 
 

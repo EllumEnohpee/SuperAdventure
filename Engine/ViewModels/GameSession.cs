@@ -31,6 +31,7 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToWest));
                 GivePlayerQuestAtLocation();
+                CompleteQuestAtLocation();
                 GetMonsterAtLocation();
             }
         }
@@ -113,9 +114,76 @@ namespace Engine.ViewModels
         {
             foreach ( Quest quest in CurrentLocation.QuestsAvailableHere)
             {
+
                 if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.QuestId == quest.QuestId))
-                    CurrentPlayer.Quests.Add(new QuestStatus(quest));
+				{
+					CurrentPlayer.Quests.Add(new QuestStatus(quest));
+					
+					RaiseMessage("");
+					RaiseMessage($"You recieved the {quest.Name} quest!");
+					RaiseMessage(quest.Description);
+					RaiseMessage("");
+					RaiseMessage($"Return with the following items...");
+					foreach (ItemQuantity itemQuantityToComplete in quest.ItemsToComplete)
+					{
+						RaiseMessage($"{itemQuantityToComplete.Quantity} {ItemFactory.CreateGameItem(itemQuantityToComplete.ItemId).Name}s");
+					}
+					RaiseMessage($"and receive the following rewards...");
+					foreach (GameItem rewardItem in quest.RewardItems)
+					{
+						RaiseMessage(rewardItem.Name);
+					}
+					RaiseMessage($"{quest.RewardGold} Gold");
+					RaiseMessage($"{quest.RewardExperiencePoints} Experience");
+					
+				}
+                
             }
+        }
+
+        public void CompleteQuestAtLocation()
+        {
+			//Does the player have a matching quest?
+			foreach(Quest quest in CurrentLocation.QuestsAvailableHere)
+			{
+				QuestStatus questStatusToComplete = 
+					CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.QuestId == quest.QuestId);
+				{
+					//Is that quest complete?
+					if(questStatusToComplete != null && !questStatusToComplete.IsCompleted)
+					{
+						//Does the player have the necessary items?
+						if(CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
+						{
+							//If so give player rewards
+							RaiseMessage("");
+							RaiseMessage($"Quest {quest.Name} complete!");
+							RaiseMessage("You recieve..");
+							foreach(GameItem rewardItem in quest.RewardItems)
+							{
+								CurrentPlayer.AddItemToInventory(rewardItem);
+								RaiseMessage(rewardItem.Name);
+							}
+							CurrentPlayer.Gold += quest.RewardGold;
+							RaiseMessage($"{quest.RewardGold} Gold");
+							CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
+							RaiseMessage($"{quest.RewardExperiencePoints} Experience");
+							//remove items from inventory
+							foreach(ItemQuantity questItemQuantity in quest.ItemsToComplete)
+							{
+								CurrentPlayer.RemoveItemQuantity(questItemQuantity);
+							}
+							//and mark quest complete
+							questStatusToComplete.IsCompleted = true;
+						}
+					}
+				}
+			}
+
+			
+			
+			
+
         }
 
         private void GetMonsterAtLocation()

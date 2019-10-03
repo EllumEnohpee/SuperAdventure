@@ -11,7 +11,7 @@ namespace Engine.Factories
 
         static QuestFactory()
         {
-            Quests.Add(new Quest("Clear the herb garden", "Defeat the snakes in the herbalist's garden", 1, new List<ItemQuantity> { new ItemQuantity(9001, 5) },
+            Quests.Add(new Quest("Clear the herb garden", "Defeat the snakes in the herbalist's garden", 1, new List<ItemQuantity> { new ItemQuantity(9001, 3) },
                 new List<GameItem> { ItemFactory.CreateGameItem(1002) }, 5, 1));
         }
 
