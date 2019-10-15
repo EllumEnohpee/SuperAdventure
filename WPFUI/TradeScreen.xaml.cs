@@ -32,7 +32,7 @@ namespace WPFUI
 			GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
 			if(item != null)
 			{
-				Session.CurrentPlayer.RemoveItem(item);
+				Session.CurrentPlayer.RemoveItemFromInventory(item);
 				Session.CurrentPlayer.Gold += item.Price;
 				Session.CurrentTrader.AddItemToInventory(item);
 			}

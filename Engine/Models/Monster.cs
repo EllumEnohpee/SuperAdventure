@@ -5,24 +5,13 @@ using System.Collections.ObjectModel;
 
 namespace Engine.Models
 {
-    public class Monster : BaseNotificationClass
+    public class Monster : LivingEntity
     {
-        private int _hitPoints;
         //Properties
-        public string Name { get; set; }
         public string ImageName { get; set; }
-        public int HitPoints
-        {
-            get { return _hitPoints; }
-
-            set {_hitPoints = value;  OnPropertyChanged(nameof(HitPoints)); }
-        }               
-        public int MaximumHitPoints { get; set; }
         public int MinimumDamage { get; set; }
         public int MaximumDamage { get; set; }
         public int RewardExperiencePoints { get; set; }
-        public int RewardGold { get; set; }
-        public ObservableCollection<ItemQuantity> Inventory { get; set; }
 
         //constructor
 
@@ -31,13 +20,12 @@ namespace Engine.Models
         {
             Name = name;
             ImageName = $"Monsters/{imageName}";
-            HitPoints = hitPoints;
+            CurrentHitPoints = hitPoints;
             MaximumHitPoints = maximumHitPoints;
             MinimumDamage = minimumDamaage;
             MaximumDamage = maximumDamage;
             RewardExperiencePoints = rewardExperiencePoints;
-            RewardGold = rewardGold;
-            Inventory = new ObservableCollection<ItemQuantity>();
+            Gold = rewardGold;
         }
 
     }

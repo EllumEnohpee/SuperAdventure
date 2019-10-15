@@ -80,7 +80,7 @@ namespace Engine.ViewModels
             CurrentPlayer = new Player();
             CurrentPlayer.Name = "Ellum";
             CurrentPlayer.CharacterClass = "Fighter";
-            CurrentPlayer.HitPoints = 10;
+            CurrentPlayer.CurrentHitPoints = 10;
             CurrentPlayer.ExperiencePoints = 0;
             CurrentPlayer.Level = 1;
             CurrentPlayer.Gold = 1000000;
@@ -224,26 +224,22 @@ namespace Engine.ViewModels
             }
             else
             {
-                CurrentMonster.HitPoints -= damageToMonster;
+                CurrentMonster.CurrentHitPoints -= damageToMonster;
                 RaiseMessage($"You dealt {damageToMonster} points of damage to the {CurrentMonster.Name}");
             }
 
             //Is the monster defeated?  Collect rewards
-            if(CurrentMonster.HitPoints <= 0)
+            if(CurrentMonster.CurrentHitPoints <= 0)
             {
                 RaiseMessage($"You defeated the {CurrentMonster.Name}!");
-                CurrentPlayer.Gold += CurrentMonster.RewardGold;
-                RaiseMessage($"You received {CurrentMonster.RewardGold} gold.");
+                CurrentPlayer.Gold += CurrentMonster.Gold;
+                RaiseMessage($"You received {CurrentMonster.Gold} gold.");
                 CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
                 RaiseMessage($"You received {CurrentMonster.RewardExperiencePoints} experience points.");
-                foreach(ItemQuantity rewardItem in CurrentMonster.Inventory)
+                foreach(GameItem rewardItem in CurrentMonster.Inventory)
                 {
-                    GameItem item = ItemFactory.CreateGameItem(rewardItem.ItemId);
-                    for (int i = 0; i <  rewardItem.Quantity; i++)
-                    {
-                        CurrentPlayer.AddItemToInventory(item);
-                    }
-                    RaiseMessage($"You received {rewardItem.Quantity} {item.Name}s.");
+                        CurrentPlayer.AddItemToInventory(rewardItem);
+                    RaiseMessage($"You received a {rewardItem.Name}.");
                 }
                 CurrentMonster = null;
             }
@@ -252,15 +248,15 @@ namespace Engine.ViewModels
             {
                 int damageToPlayer = 
                     RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
-                CurrentPlayer.HitPoints -= damageToPlayer;
+                CurrentPlayer.CurrentHitPoints -= damageToPlayer;
                 RaiseMessage($"The {CurrentMonster.Name} attacks you for {damageToPlayer} damage!");
             }
             //If player is defeated return to home and heal to maximum
-            if(CurrentPlayer.HitPoints <= 0)
+            if(CurrentPlayer.CurrentHitPoints <= 0)
             {
                 RaiseMessage($"You were defeated by the {CurrentMonster.Name}!");
                 CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                CurrentPlayer.HitPoints = 10 * CurrentPlayer.Level;
+                CurrentPlayer.CurrentHitPoints = 10 * CurrentPlayer.Level;
                 
             }
         }
