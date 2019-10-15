@@ -77,7 +77,11 @@
                 </DataGridTemplateColumn>
 
             </DataGrid.Columns>
+            
         </DataGrid>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                    Content="Close"
+                    Click="OnClick_CloseWindow"/>
                   
         
     </Grid>

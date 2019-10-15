@@ -40,12 +40,21 @@ namespace WPFUI
 		public void OnClick_Buy(object sender, RoutedEventArgs e)
 		{
 			GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
-			if(item != null && Session.CurrentPlayer.Gold >= item.Price)
+			if(Session.CurrentPlayer.Gold < item.Price)
+			{
+				MessageBox.Show("You do not have enough gold!");
+				return;
+			}
+			if(item != null)
 			{
 				Session.CurrentPlayer.AddItemToInventory(item);
 				Session.CurrentPlayer.Gold -= item.Price;
 				Session.CurrentTrader.RemoveItemFromInventory(item);
 			}
+		}
+		public void OnClick_CloseWindow(object sender, RoutedEventArgs e)
+		{
+			Close();
 		}
 	}
 }
