@@ -14,6 +14,7 @@ namespace Engine.Models
         public String Name { get; set; }
         public String Description { get; set; }
         public String ImageName { get; set; }
+		public Trader TraderHere { get; set; }
 
         public List<Quest> QuestsAvailableHere { get; set; } = new List<Quest>();
 

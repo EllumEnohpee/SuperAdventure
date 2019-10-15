@@ -19,6 +19,7 @@ namespace Engine.ViewModels
         //Properties
         public Player CurrentPlayer { get; set; }
         public Weapon CurrentWeapon { get; set; }
+		public Trader CurrentTrader { get; set; }
         public Location CurrentLocation
         {
             get { return _currentLocation; }
@@ -33,6 +34,7 @@ namespace Engine.ViewModels
                 GivePlayerQuestAtLocation();
                 CompleteQuestAtLocation();
                 GetMonsterAtLocation();
+				GetTraderAtLocation();
             }
         }
 
@@ -66,6 +68,7 @@ namespace Engine.ViewModels
         public bool HasLocationToWest =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
         public bool HasMonster => CurrentMonster != null;
+		public bool HasTrader => CurrentTrader != null;
         //Constructors
         public GameSession()
         {            
@@ -109,6 +112,7 @@ namespace Engine.ViewModels
         {
             CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
         }
+
 
         public void GivePlayerQuestAtLocation()
         {
@@ -190,6 +194,13 @@ namespace Engine.ViewModels
         {
             CurrentMonster = CurrentLocation.GetMonster();
         }
+
+		private void GetTraderAtLocation()
+		{
+			CurrentTrader = CurrentLocation.TraderHere;
+			OnPropertyChanged(nameof(CurrentTrader));
+			OnPropertyChanged(nameof(HasTrader));
+		}
 
         private void RaiseMessage(string message)
         {
