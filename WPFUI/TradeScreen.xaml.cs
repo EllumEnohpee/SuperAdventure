@@ -29,27 +29,27 @@ namespace WPFUI
 
 		public void OnClick_Sell(object sender, RoutedEventArgs e)
 		{
-			GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
-			if(item != null)
+			GroupedInventoryItem groupedItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
+			if(groupedItem != null)
 			{
-				Session.CurrentPlayer.RemoveItemFromInventory(item);
-				Session.CurrentPlayer.Gold += item.Price;
-				Session.CurrentTrader.AddItemToInventory(item);
+				Session.CurrentPlayer.RemoveItemFromInventory(groupedItem.Item);
+				Session.CurrentPlayer.Gold += groupedItem.Item.Price;
+				Session.CurrentTrader.AddItemToInventory(groupedItem.Item);
 			}
 		}
 		public void OnClick_Buy(object sender, RoutedEventArgs e)
 		{
-			GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
-			if(Session.CurrentPlayer.Gold < item.Price)
+			GroupedInventoryItem groupedItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
+			if(Session.CurrentPlayer.Gold < groupedItem.Item.Price)
 			{
 				MessageBox.Show("You do not have enough gold!");
 				return;
 			}
-			if(item != null)
+			if(groupedItem != null)
 			{
-				Session.CurrentPlayer.AddItemToInventory(item);
-				Session.CurrentPlayer.Gold -= item.Price;
-				Session.CurrentTrader.RemoveItemFromInventory(item);
+				Session.CurrentPlayer.AddItemToInventory(groupedItem.Item);
+				Session.CurrentPlayer.Gold -= groupedItem.Item.Price;
+				Session.CurrentTrader.RemoveItemFromInventory(groupedItem.Item);
 			}
 		}
 		public void OnClick_CloseWindow(object sender, RoutedEventArgs e)

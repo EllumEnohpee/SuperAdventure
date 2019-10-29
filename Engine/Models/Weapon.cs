@@ -10,7 +10,7 @@ namespace Engine.Models
         public int MaximumDamage { get; set; }
 
         public Weapon(int itemId, String name, int price, int minimumDamage, int maximumDamage)
-            : base(itemId, name, price)
+            : base(itemId, name, price, true)
         {
             MinimumDamage = minimumDamage;
             MaximumDamage = maximumDamage;

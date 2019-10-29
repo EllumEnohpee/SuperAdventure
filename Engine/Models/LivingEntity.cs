@@ -47,6 +47,8 @@ namespace Engine.Models
 
 		public ObservableCollection<GameItem> Inventory { get; set; } = new ObservableCollection<GameItem>();
 
+		public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; } = new ObservableCollection<GroupedInventoryItem>();
+
 		public List<GameItem> Weapons =>
 			Inventory.Where(item => item is Weapon).ToList();
 
@@ -59,20 +61,33 @@ namespace Engine.Models
 		public void AddItemToInventory(GameItem item)
 		{
 			Inventory.Add(item);
+			if (item.IsUnique || !GroupedInventory.Any(gi => gi.Item.ItemId == item.ItemId))
+			{
+				GroupedInventory.Add(new GroupedInventoryItem(item, 1));
+			}
+			else GroupedInventory.FirstOrDefault(gi => gi.Item.ItemId == item.ItemId).Quantity++;
+			
 			OnPropertyChanged(nameof(Weapons));
 		}
 
 		public void RemoveItemQuantity(ItemQuantity itemQuantity)
 		{
+			GameItem itemToRemove = ItemFactory.CreateGameItem(itemQuantity.ItemId);
 			for (int i = 0; i < itemQuantity.Quantity; i++)
 			{
-				Inventory.Remove(ItemFactory.CreateGameItem(itemQuantity.ItemId));
+				Inventory.Remove(itemToRemove);
 			}
+			GroupedInventory.FirstOrDefault(gi => gi.Item.ItemId == itemToRemove.ItemId).Quantity -= itemQuantity.Quantity;
 			OnPropertyChanged(nameof(Weapons));
 		}
 		public void RemoveItemFromInventory(GameItem item)
 		{
 			Inventory.Remove(item);
+			GroupedInventoryItem itemToRemove = GroupedInventory.FirstOrDefault(gi => gi.Item.ItemId == item.ItemId);
+			if (itemToRemove.Quantity <= 1)
+				GroupedInventory.Remove(itemToRemove);
+			else itemToRemove.Quantity--;
+			OnPropertyChanged(nameof(Weapons));
 		}
 	}
 }

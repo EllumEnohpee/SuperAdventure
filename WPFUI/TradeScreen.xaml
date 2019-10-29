@@ -28,23 +28,27 @@
                HorizontalAlignment="Center"
                Grid.Row="1"
                Grid.Column="0"/>
-        <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}" 
+        <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}" 
                   AutoGenerateColumns="False" 
                   GridLinesVisibility="None"
                   Grid.Row="2" 
-                  Grid.Column="0" >
+                  Grid.Column="0" 
+                  IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}"
+                <DataGridTextColumn Binding="{Binding Path=Item.Name}"
                                     Header="Description"
                                     Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Price}"
+                <DataGridTextColumn Binding="{Binding Quantity}"
+                                    Header="Quanitity"
+                                    Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Path=Item.Price}"
                                     Header="Value"
                                     Width="Auto"/>
                 <DataGridTemplateColumn Width="Auto"
                                         Header="Sell">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Sell" Click="OnClick_Sell"/>
+                            <Button Content="Sell 1" Click="OnClick_Sell"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -55,23 +59,27 @@
                HorizontalAlignment="Center"
                Grid.Row="1"
                Grid.Column="1"/>
-        <DataGrid ItemsSource="{Binding CurrentTrader.Inventory}"
+        <DataGrid ItemsSource="{Binding CurrentTrader.GroupedInventory}"
                   AutoGenerateColumns="False"
                   GridLinesVisibility="None"
                   Grid.Row="2" 
-                  Grid.Column="1">
+                  Grid.Column="1"
+                  IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}"
+                <DataGridTextColumn Binding="{Binding Item.Name}"
                                     Header="Description"
                                     Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Price}"
+                <DataGridTextColumn Binding="{Binding Quantity}"
+                                    Header="Quantity"
+                                    Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Item.Price}"
                                     Header="Value"
                                     Width="Auto"/>
                 <DataGridTemplateColumn Header="Buy"
                                         Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Buy" Click="OnClick_Buy"/>
+                            <Button Content="Buy 1" Click="OnClick_Buy"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

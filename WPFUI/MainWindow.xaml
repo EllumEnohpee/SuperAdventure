@@ -137,19 +137,22 @@
         <Grid Grid.Row="2" Grid.Column="0" Background="BurlyWood">
             <TabControl>
                 <TabItem Header="Inventory" >
-                    <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}"  
+                    <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}"  
                               GridLinesVisibility="None"
                               AutoGenerateColumns="False" 
+                              IsReadOnly="True"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Price" Width="Auto" Binding="{Binding Price}"/>
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Item.Name}"/>
+                            <DataGridTextColumn Header="Quantity" Width="Auto" Binding="{Binding Quantity}"/>
+                            <DataGridTextColumn Header="Price" Width="Auto" Binding="{Binding Item.Price}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Quests">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Quests}"
                               AutoGenerateColumns="False"
+                              IsReadOnly="True"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding PlayerQuest.Name}"/>
